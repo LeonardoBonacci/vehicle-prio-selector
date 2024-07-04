@@ -3,6 +3,8 @@ package spendreport;
 
 import java.util.function.Supplier;
 
+import org.apache.flink.shaded.jackson2.com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,6 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonPropertyOrder({"numberplate", "apple", "timestamp", "priority"})
 public final class Vehicle {
 
     private long numberplate;

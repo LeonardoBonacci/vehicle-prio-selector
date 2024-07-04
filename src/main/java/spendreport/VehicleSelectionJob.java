@@ -1,28 +1,50 @@
 package spendreport;
 
+import java.io.File;
 import java.time.Duration;
 
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.functions.ReduceFunction;
+import org.apache.flink.connector.file.src.FileSource;
+import org.apache.flink.core.fs.Path;
+import org.apache.flink.formats.csv.CsvReaderFormat;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.windowing.assigners.SlidingEventTimeWindows;
 
 public class VehicleSelectionJob {
 	
-	@SuppressWarnings({ "deprecation", "serial" })
+	@SuppressWarnings({ "serial" })
 	public static void main(String[] args) throws Exception {
 		
 		final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
+		final FileSource<Vehicle> source =
+        FileSource.forRecordStreamFormat(CsvReaderFormat.forPojo(Vehicle.class), Path.fromLocalFile(new File("/tmp/flink")))
+        .monitorContinuously(Duration.ofMillis(5))  
+        .build();
+
+		WatermarkStrategy<Vehicle> watermarkStrategy = WatermarkStrategy
+	    .<Vehicle>forBoundedOutOfOrderness(Duration.ofSeconds(10))
+	    .withIdleness(Duration.ofMinutes(1))
+  	  .withTimestampAssigner((vehicle, timestamp) -> vehicle.getTimestamp()); 
+	
 		DataStream<Vehicle> vehicles = 
 			env
-			.addSource(new VehicleSource())
-			.assignTimestampsAndWatermarks(WatermarkStrategy
-	        .<Vehicle>forMonotonousTimestamps()
-	        .withTimestampAssigner((vehicle, timestamp) -> vehicle.getTimestamp()))
-			.name("vehicles");
+				.fromSource(source, watermarkStrategy, "vehicle-file-input")
+				.name("vehicle-source");
+		
+		vehicles
+				.print();
 
+//		DataStream<Vehicle> vehicles = 
+//			env
+//			.addSource(new VehicleSource())
+//			.assignTimestampsAndWatermarks(WatermarkStrategy
+//	        .<Vehicle>forMonotonousTimestamps()
+//	        .withTimestampAssigner((vehicle, timestamp) -> vehicle.getTimestamp()))
+//			.name("vehicles");
+//
 		vehicles
 			.keyBy(Vehicle::getApple)
 			.window(SlidingEventTimeWindows.of(Duration.ofSeconds(5), Duration.ofSeconds(3)))
