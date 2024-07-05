@@ -67,7 +67,7 @@ public class VehicleSelectionJob {
 		selectedVehicles.print();
 
 		HttpSink<String> poster = HttpSink.<String>builder()
-	    .setEndpointUrl("http://localhost:8080/foo")
+	    .setEndpointUrl("http://vehicle-app:8080/foo")
 	    .setProperty("gid.connector.http.sink.header.Content-Type", "application/json")
 	    .setElementConverter(
 	        (v, _context) -> new HttpSinkRequestEntry("POST", v.getBytes(StandardCharsets.UTF_8)))

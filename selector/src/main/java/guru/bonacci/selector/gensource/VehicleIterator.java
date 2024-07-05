@@ -7,13 +7,13 @@ import java.util.Random;
 import java.util.function.Supplier;
 
 import guru.bonacci.selector.Vehicle;
-import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
 final class VehicleIterator implements Iterator<Vehicle>, Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    public VehicleIterator() {
+    }
 
     static VehicleIterator unbounded() {
         return new VehicleIterator();
