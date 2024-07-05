@@ -1,6 +1,7 @@
 package guru.bonacci.selector;
 
 
+import java.io.Serializable;
 import java.util.function.Supplier;
 
 import org.apache.flink.shaded.jackson2.com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -13,9 +14,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonPropertyOrder({"numberplate", "apple", "timestamp", "priority"})
-public final class Vehicle {
+public final class Vehicle implements Serializable {
 
-    private long numberplate;
+    private static final long serialVersionUID = 1L;
+    
+		private long numberplate;
     private String apple;
     private long timestamp;
     private int priority;

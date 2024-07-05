@@ -19,14 +19,25 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @EnableScheduling
 @SpringBootApplication
+@RestController
 public class VehicleAppApplication implements CommandLineRunner {
 
+	@PostMapping("/foo")
+  void selected(@RequestBody String selectedVehicle) {
+		log.info("---------------------------");
+		log.info("do something with " + selectedVehicle);
+		log.info("---------------------------");
+  }
+	
 	public static void main(String[] args) {
 		SpringApplication.run(VehicleAppApplication.class, args);
 	}
@@ -50,7 +61,7 @@ public class VehicleAppApplication implements CommandLineRunner {
       		 																System.currentTimeMillis(), 
       		 																randomPriority.get());
 	
-       System.out.println(content);
+//       System.out.println(content);
        File file = new File(String.format("/tmp/flink/%d.csv", now));
 	
        if (!file.exists()) {
@@ -82,16 +93,16 @@ public class VehicleAppApplication implements CommandLineRunner {
                 .matcher(file.getName()).find();
       File[] files = folder.listFiles();
  
-      System.out.println("Deleting Files at ts " + System.currentTimeMillis());
+//      System.out.println("Deleting Files at ts " + System.currentTimeMillis());
       Arrays.stream(files).filter(regexMatcher::apply)
       			.map(file -> file.getName().replace(".csv", ""))
-            .peek(System.out::println)
+//            .peek(System.out::println)
       			.map(Long::valueOf)
       			.filter(timestamp -> timestamp < oneMinAgo)
       			.map(fileName -> new File(folder + "/" + fileName + ".csv"))
             .peek(System.out::println)
             .forEach(File::delete);
-      System.out.println("Files deleted");
+//      System.out.println("Files deleted");
     } 	
 	}
 }
