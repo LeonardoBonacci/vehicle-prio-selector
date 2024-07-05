@@ -61,7 +61,7 @@ public class VehicleAppApplication implements CommandLineRunner {
       		 																System.currentTimeMillis(), 
       		 																randomPriority.get());
 	
-//       System.out.println(content);
+       System.out.println(content);
        File file = new File(String.format("/tmp/flink/%d.csv", now));
 	
        if (!file.exists()) {
@@ -93,7 +93,7 @@ public class VehicleAppApplication implements CommandLineRunner {
                 .matcher(file.getName()).find();
       File[] files = folder.listFiles();
  
-//      System.out.println("Deleting Files at ts " + System.currentTimeMillis());
+      System.out.println("Deleting Files at ts " + System.currentTimeMillis());
       Arrays.stream(files).filter(regexMatcher::apply)
       			.map(file -> file.getName().replace(".csv", ""))
 //            .peek(System.out::println)
@@ -102,7 +102,7 @@ public class VehicleAppApplication implements CommandLineRunner {
       			.map(fileName -> new File(folder + "/" + fileName + ".csv"))
             .peek(System.out::println)
             .forEach(File::delete);
-//      System.out.println("Files deleted");
+      System.out.println("Files deleted");
     } 	
 	}
 }
