@@ -1,4 +1,4 @@
-package spendreport;
+package guru.bonacci.selector;
 
 
 import java.util.function.Supplier;
@@ -20,7 +20,7 @@ public final class Vehicle {
     private long timestamp;
     private int priority;
     
-    Vehicle(long numberplate, Supplier<String> appleSupplier, long timestamp, Supplier<Integer> prioritySupplier) {
+    public Vehicle(long numberplate, Supplier<String> appleSupplier, long timestamp, Supplier<Integer> prioritySupplier) {
     	this(numberplate, appleSupplier.get(), timestamp, prioritySupplier.get());
     }
 }

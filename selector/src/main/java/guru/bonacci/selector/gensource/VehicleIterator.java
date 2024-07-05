@@ -1,4 +1,4 @@
-package spendreport;
+package guru.bonacci.selector.gensource;
 
 import java.io.Serializable;
 import java.util.Iterator;
@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
 
+import guru.bonacci.selector.Vehicle;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor

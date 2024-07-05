@@ -1,9 +1,11 @@
-package spendreport;
+package guru.bonacci.selector.gensource;
 
 import java.io.Serializable;
 import java.util.Iterator;
 
 import org.apache.flink.streaming.api.functions.source.FromIteratorFunction;
+
+import guru.bonacci.selector.Vehicle;
 
 public class VehicleSource extends FromIteratorFunction<Vehicle> {
 
